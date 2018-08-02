@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <title>Google Maps -- Hello World!</title>
+    <style>
+        #map{
+            height: 400px;
+        }
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        .spacer10{
+            margin-top: 10px;
+        }
+        .spacer15{
+            margin-top: 15px;
+        }
+        .spacer20{
+            margin-top: 20px;
+        }
+        .spacer30{
+            margin-top: 30px;
+        }
+        .input_text{
+            width: 25%;
+        }
+        .label{
+            float: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="container spacer30">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <h1>Google Maps</h1>
+                <div class="spacer15"></div>
+                <div id="map"></div>
+            </div>
+            <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 spacer20">
+                <span class="label">Lat:</span>
+            </div>
+            <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10 spacer20">
+                <input type="text" class="form-control input_text" id="lat">
+            </div>
+            <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 spacer10">
+                <span class="label">Lng:</span>
+            </div>
+            <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10 spacer10">
+                <input type="text" class="form-control input_text" id="lng">
+            </div>
+            <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 spacer10">
+                <span class="label">Zoom:</span>
+            </div>
+            <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10 spacer10">
+                <input type="text" class="form-control input_text" id="zoom">
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 spacer10">
+                <input type="button" value="Launch" class="pull-right btn btn-primary" id="btn_launch">
+            </div>
+        </div>
+    </div>
+    <script>
+        var map;
+        var input_id= ['lat','lng','zoom'];
+        input_checker = function(arr){
+            var result = [];
+            arr.forEach((e) => {
+                if($('#'+e).val() !== ""){
+                    result.push(true);
+                } else{
+                    result.push(false);
+                }
+            });
+            if(result.indexOf(false) >= 0){return false;}else{return true;}
+        }
+        initMap = function(){
+            var lat_num = -34.397, lan_num = 150.644, zoom_num= 10;
+            var coordinates = [-34.397,150.644,10];
+            map = new google.maps.Map(document.getElementById('map'),{
+                center: {lat: coordinates[0], lng: coordinates[1]},
+                zoom: coordinates[2]
+            });
+            if(!input_checker(input_id)){
+                input_id.forEach((e) => {
+                    var i = input_id.indexOf(e);
+                    $('#'+e).val(coordinates[i]);
+                });
+            }
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCrwVnQQRU3KAbvkSAFzSRLxpymNFBpiA&callback=initMap" async defer></script>
+</body>
+</html>
