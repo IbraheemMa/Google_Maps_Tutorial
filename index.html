@@ -84,7 +84,9 @@
         }
         initMap = function(coordinates){
             var lat_num = -34.397, lan_num = 150.644, zoom_num= 10;
-            coordinates = [-34.397,150.644,10];
+            if(coordinates == undefined){
+                coordinates = [-34.397,150.644,10];
+            }
             map = new google.maps.Map(document.getElementById('map'),{
                 center: {lat: coordinates[0], lng: coordinates[1]},
                 zoom: coordinates[2]
@@ -95,6 +97,17 @@
                     var i = input_id.indexOf(e);
                     $('#'+e).val(coordinates[i]);
                 });
+            }
+        }
+        document.getElementById("btn_launch").onclick = function(){
+            var coords = [];
+            if(input_checker(input_id)){
+                input_id.forEach(function(e){
+                    var value = parseFloat($('#'+e).val());
+                    coords.push(value);
+                });
+                console.log(coords);
+                initMap(coords)
             }
         }
     </script>
