@@ -1,0 +1,26 @@
+#map{
+    height: 400px;
+}
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+.spacer10{
+    margin-top: 10px;
+}
+.spacer15{
+    margin-top: 15px;
+}
+.spacer20{
+    margin-top: 20px;
+}
+.spacer30{
+    margin-top: 30px;
+}
+.input_text{
+    width: 25%;
+}
+.label{
+    float: left;
+}
