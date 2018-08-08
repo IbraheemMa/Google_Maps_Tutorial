@@ -24,3 +24,8 @@ html, body {
 .label{
     float: left;
 }
+#address{
+    border: 1px solid #000090;
+    background-color: #f0f0ff;
+    padding: 15px 15px 30px 15px;
+}
