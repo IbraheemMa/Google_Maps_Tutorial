@@ -51,32 +51,32 @@ function fillInAddress() {
     for (var i = 0; i < place.address_components.length; i++) {
         var addressType = place.address_components[i].types[0],street_name,street_number;
         if (componentForm[addressType]) {
-        var val = place.address_components[i][componentForm[addressType]];
-        var generalElm = document.querySelector('.'+addressType);
-        // make street number and name in one filed
-        if(config.addressOneFiled === true ){
-            if(addressType === "route"||addressType === "premise"){
-                street_name = val;
+            var val = place.address_components[i][componentForm[addressType]];
+            var generalElm = document.querySelector('.'+addressType);
+            // make street number and name in one filed
+            if(config.addressOneFiled === true ){
+                if(addressType === "route"||addressType === "premise"){
+                    street_name = val;
+                }
+                if(addressType === "street_number"){
+                    street_number = val;
+                }
+                if(street_name !== undefined && street_number !== undefined){
+                    document.querySelector('#main_field').value = street_name +" "+street_number;
+                }       
             }
-            if(addressType === "street_number"){
-                street_number = val;
+            // Case country field as selectbox
+            if(addressType === "country" && config.landSelectbox === true){
+                val = getCountryISO3(val);
+                var selectedElmnt = document.querySelector(''+config.landSelectboxSelector+' [selected]');
+                if(selectedElmnt){
+                    selectedElmnt.removeAttribute('selected');
+                }
+                document.querySelector(''+config.landSelectboxSelector+' [value="'+val+'"]').setAttribute('selected','');
             }
-            if(street_name !== undefined && street_number !== undefined){
-                document.querySelector('#main_field').value = street_name +" "+street_number;
-            }       
-        }
-        // Case country field as selectbox
-        if(addressType === "country" && config.landSelectbox === true){
-            val = getCountryISO3(val);
-            var selectedElmnt = document.querySelector(''+config.landSelectboxSelector+' [selected]');
-            if(selectedElmnt){
-                selectedElmnt.removeAttribute('selected');
+            if(generalElm){
+                generalElm.value = val;
             }
-            document.querySelector(''+config.landSelectboxSelector+' [value="'+val+'"]').setAttribute('selected','');
-        }
-        if(generalElm){
-            generalElm.value = val;
-        }
         }
     }
 }
@@ -86,36 +86,36 @@ function fillInAddress() {
 function geolocate() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
-        var geolocation = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-        };
-        var circle = new google.maps.Circle({
-            center: geolocation,
-            radius: position.coords.accuracy
-        });
-        autocomplete.setBounds(circle.getBounds());
+            var geolocation = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+            };
+            var circle = new google.maps.Circle({
+                center: geolocation,
+                radius: position.coords.accuracy
+            });
+            autocomplete.setBounds(circle.getBounds());
         });
     }
 }
 
 // Create 'script' element with the google api link
 window.onload = function(){
-if(config.apiKey === undefined || config.apiKey === ""){
-    console.error("Please define 'apiKey' variable with valid key");
-    return;
-}
-var script = document.createElement('script');
-    script.src = "https://maps.googleapis.com/maps/api/js?key="+config.apiKey+"&libraries=places&callback=initAutocomplete";
-    script.setMultiAttribute({async:'',defer:''});
-    document.body.appendChild(script);
+    if(config.apiKey === undefined || config.apiKey === ""){
+        console.error("Please define 'apiKey' variable with valid key");
+        return;
+    }
+    var script = document.createElement('script');
+        script.src = "https://maps.googleapis.com/maps/api/js?key="+config.apiKey+"&libraries=places&callback=initAutocomplete";
+        script.setMultiAttribute({async:'',defer:''});
+        document.body.appendChild(script);
 }
 
 // Method to add multiple attributes
 // to add attributes use an object which object key would be 'attribute name' and the value 'attribute value'
 // EXAMPLE: {href: "https://www.example.com", class: "button"}
 Element.prototype.setMultiAttribute = function(obj){
-for(var objKey in obj){
-    this.setAttribute(objKey,obj[objKey]);
-}
+    for(var objKey in obj){
+        this.setAttribute(objKey,obj[objKey]);
+    }
 }
